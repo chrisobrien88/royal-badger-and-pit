@@ -13,6 +13,11 @@ const Signup = () => {
         color: darkTheme ? '#CCC' : '#333'
     }
 
+    const themeButtonStyles = {
+        backgroundColor: !darkTheme ? '#333' : '#ffffff',
+        color: !darkTheme ? '#CCC' : '#333'
+    }
+
     const emailRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
     const passwordConfirmRef = useRef<HTMLInputElement>(null)
@@ -42,7 +47,7 @@ const Signup = () => {
 
   return (
     <>
-    <button onClick={toggleTheme}>Toggle Theme here</button>
+    <button style={themeButtonStyles} onClick={toggleTheme}>{darkTheme? 'light mode' : 'dark mode'}</button>
         <Card style={themeStyles}>
             <Card.Body>
                 <h2 className="text-center mb-4">Sign Up</h2>

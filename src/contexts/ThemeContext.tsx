@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-const ThemeContext = React.createContext<any>(null);
+const ThemeContext = React.createContext<boolean>(true);
 const ThemeUpdateContext = React.createContext<any>(null);
 
 export const useTheme = () => {
@@ -17,13 +17,13 @@ export const useThemeUpdate = () => {
 export const ThemeProvider = ({ children }: any) => {
     const [darkTheme, setDarkTheme] = React.useState<boolean>(true);
     
-    const toggleTheme = () => {
+    function toggleTheme () {
         setDarkTheme(prevDarkTheme => !prevDarkTheme);
     }
     
     return (
-        <ThemeContext.Provider value={ darkTheme }>
-            <ThemeUpdateContext.Provider value={ toggleTheme }>
+        <ThemeContext.Provider value={darkTheme}>
+            <ThemeUpdateContext.Provider value={toggleTheme}>
                 {children}
             </ThemeUpdateContext.Provider>
         </ThemeContext.Provider>
