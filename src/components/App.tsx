@@ -19,17 +19,17 @@ function App() {
 
   return (
     <ThemeProvider >
-    <AuthProvider >
-      <Container 
-        className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}>
-        <div className="w-100" style={{ maxWidth: "400px" }}>
-          {/* why is this button not working? */}
-        <button style={themeStyles} onClick={toggleTheme}>{darkTheme? "light" : "dark" }</button>
-          <Signup/>
-        </div>
-      </Container>
-    </AuthProvider>
+      <AuthProvider >
+        <Container 
+          className="d-flex align-items-center justify-content-center"
+          style={{ minHeight: "100vh" }}>
+          <div className="w-100" style={{ maxWidth: "400px" }}>
+            {/* why is this button not working but the same button in Signup.tsx does work? */}
+          <button style={themeStyles} onClick={toggleTheme}>{darkTheme? "light" : "dark" }</button>
+            <Signup/>
+          </div>
+        </Container>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
