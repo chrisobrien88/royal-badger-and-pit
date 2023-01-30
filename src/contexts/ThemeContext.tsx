@@ -1,7 +1,7 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 const ThemeContext = React.createContext<boolean>(true);
-const ThemeUpdateContext = React.createContext<any>(() => {});
+const ThemeUpdateContext = React.createContext<any>(null);
 
 export const useTheme = () => {
     return useContext(ThemeContext);
@@ -14,7 +14,7 @@ export const useThemeUpdate = () => {
 
 
 export const ThemeProvider = ({ children }: any ) => {
-    const [darkTheme, setDarkTheme] = React.useState<boolean>(true);
+    const [darkTheme, setDarkTheme] = useState<boolean>(true);
     
     function toggleTheme () {
         setDarkTheme(!darkTheme);

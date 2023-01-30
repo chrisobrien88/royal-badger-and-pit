@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { useTheme, useThemeUpdate } from '../contexts/ThemeContext'
 import { Link, useNavigate } from 'react-router-dom'
 
-const Signup = () => {
+const UpdateProfile = () => {
 
     const darkTheme = useTheme()
     const toggleTheme = useThemeUpdate()
@@ -23,28 +23,33 @@ const Signup = () => {
     const passwordRef = useRef<HTMLInputElement>(null)
     const passwordConfirmRef = useRef<HTMLInputElement>(null)
     const navigate = useNavigate()
-    const { signup } = useAuth()
+    const { currentUser, updateEmail, updatePassword } = useAuth()
+
 
     const [error, setError] = useState<String>('')
+    const [message, setMessage] = useState<String>('')
     const [loading, setLoading] = useState<boolean>(false)
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (passwordRef.current?.value !== passwordConfirmRef.current?.value) {
+        if (passwordRef.current?.value !== passwordConfirmRef.current?.value) {            
             return setError('Passwords do not match')
         }
 
         try {
             setError('')
             setLoading(true)
-            await signup(emailRef.current?.value, passwordRef.current?.value)
-            navigate("/dashboard")
-
+            await updateEmail(emailRef.current?.value)
+            if (passwordRef.current?.value !== '') {
+                await updatePassword(passwordRef.current?.value)
+                return setMessage('Email and password updated')
+            }
+            setMessage('Email updated')
 
         }
         catch {
-            setError('Failed to create an account')
+            setError('Failed to update account')
         }
         setLoading(false)
     }
@@ -53,30 +58,31 @@ const Signup = () => {
     <>
         <Card style={themeStyles}>
             <Card.Body>
-                <h2 className="text-center mb-4">Sign Up</h2>
+                <h2 className="text-center mb-4">Update Profile</h2>
+                {message && <Alert variant="success">{message}</Alert>}
                 {error && <Alert variant="danger">{error}</Alert>}
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" id="email">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" ref={emailRef} required />
+                        <Form.Control type="email" ref={emailRef} required defaultValue={currentUser.email}/>
                     </Form.Group>
                     <Form.Group className="mb-3" id="password">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" ref={passwordRef} required />
+                        <Form.Control type="password" ref={passwordRef} placeholder='Leave blank to keep the same'/>
                     </Form.Group>
                     <Form.Group className="mb-3" id="password-confirm">
                         <Form.Label>Password Confirmation</Form.Label>
-                        <Form.Control type="password" ref={passwordConfirmRef} required />
+                        <Form.Control type="password" ref={passwordConfirmRef} placeholder='Leave blank to keep the same'/>
                     </Form.Group>
-                    <Button disabled={loading} className="w-100" type="submit">Signup</Button>
+                    <Button disabled={loading} className="w-100" type="submit">Update</Button>
                 </Form>
             </Card.Body>
         </Card>
         <div className="w-100 text-center mt-2">
-            Already have an account? <Link to="/login">Log in</Link>
+            <Link to="/dashboard">Cancel</Link>
         </div>
     </>
   )
 }
 
-export default Signup
+export default UpdateProfile

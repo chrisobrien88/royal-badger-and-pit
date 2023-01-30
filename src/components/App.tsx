@@ -1,36 +1,52 @@
-import React, {useContext} from 'react';
 import Signup from './Signup';
+import ForgotPassword from './ForgotPassword';
 import { Container } from 'react-bootstrap';
 import { AuthProvider } from '../contexts/AuthContext';
-import { ThemeProvider, useThemeUpdate, useTheme } from '../contexts/ThemeContext';
+import Dashboard from './Dashboard';
+import Login from './Login';
+import { ThemeProvider} from '../contexts/ThemeContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
+import UpdateProfile from './UpdateProfile';
 
 
 
 function App() {
 
 
-  const darkTheme = useTheme();
-  const toggleTheme = useThemeUpdate();
-
-  const themeStyles = {
-    backgroundColor: darkTheme ? '#333' : '#ffffff',
-    color: darkTheme ? '#CCC' : '#333'
-}
-
   return (
-    <ThemeProvider >
-      <AuthProvider >
-        <Container 
-          className="d-flex align-items-center justify-content-center"
-          style={{ minHeight: "100vh" }}>
-          <div className="w-100" style={{ maxWidth: "400px" }}>
-            {/* why is this button not working but the same button in Signup.tsx does work? */}
-          <button style={themeStyles} onClick={toggleTheme}>{darkTheme? "light" : "dark" }</button>
-            <Signup/>
-          </div>
-        </Container>
-      </AuthProvider>
-    </ThemeProvider>
+    <Container
+      className="d-flex align-items-center justify-content-center"
+      style={{ minHeight: "100vh" }}>
+      <div className='w-100' style={{ maxWidth: '400px' }}>
+        <Router>
+          <ThemeProvider >
+            <AuthProvider >
+              {/* <Navbar/> */}
+              <Routes>
+                <Route 
+                  path="/dashboard" 
+                  element={
+                    <PrivateRoute >
+                      <Dashboard />
+                    </PrivateRoute>
+                  }/>
+                  <Route 
+                  path="/update-profile" 
+                  element={
+                    <PrivateRoute >
+                      <UpdateProfile />
+                    </PrivateRoute>
+                  }/>
+                <Route path="/signup" element={<Signup/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/forgot-password" element={<ForgotPassword/>}/>
+              </Routes>
+            </AuthProvider>
+          </ThemeProvider>
+        </Router>
+      </div>
+    </Container>
   );
 }
 
