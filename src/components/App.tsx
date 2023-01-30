@@ -29,7 +29,6 @@ function App() {
           <Signup/>
         </div>
       </Container>
-
     </AuthProvider>
     </ThemeProvider>
   );
