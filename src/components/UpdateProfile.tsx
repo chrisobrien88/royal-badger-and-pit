@@ -2,7 +2,7 @@ import React, { useRef, useState }from 'react'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme, useThemeUpdate } from '../contexts/ThemeContext'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
 
 const UpdateProfile = () => {
 
@@ -25,33 +25,40 @@ const UpdateProfile = () => {
     const navigate = useNavigate()
     const { currentUser, updateEmail, updatePassword } = useAuth()
 
+    
 
     const [error, setError] = useState<String>('')
     const [message, setMessage] = useState<String>('')
     const [loading, setLoading] = useState<boolean>(false)
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         if (passwordRef.current?.value !== passwordConfirmRef.current?.value) {            
             return setError('Passwords do not match')
         }
 
-        try {
+        const promises: Promise<any>[] = []
+            setMessage('')
             setError('')
             setLoading(true)
-            await updateEmail(emailRef.current?.value)
-            if (passwordRef.current?.value !== '') {
-                await updatePassword(passwordRef.current?.value)
-                return setMessage('Email and password updated')
+            if (emailRef.current?.value !== currentUser.email) {
+                promises.push(updateEmail(emailRef.current?.value))
             }
-            setMessage('Email updated')
+            if (passwordRef.current?.value) {
+                promises.push(updatePassword(passwordRef.current?.value))
+            }
+            Promise.all(promises).then(() => {
+                navigate("/dashboard")
+            }).catch(() => {
+                setError('Failed to update account')
+            }).finally(() => {
+                setLoading(false)
+            })
+    }
 
-        }
-        catch {
-            setError('Failed to update account')
-        }
-        setLoading(false)
+    if (!currentUser) {
+        return <Navigate to="/login" />
     }
 
   return (

@@ -8,6 +8,11 @@ import { ThemeProvider} from '../contexts/ThemeContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import UpdateProfile from './UpdateProfile';
+import Leaderboard from './Leaderboard';
+import SubmitNewScore from './SubmitNewScore';
+import MyStats from './MyStats';
+import Navbar from './Navbar';
+import CreateUserName from './CreateUserName';
 
 
 
@@ -15,38 +20,34 @@ function App() {
 
 
   return (
-    <Container
-      className="d-flex align-items-center justify-content-center"
-      style={{ minHeight: "100vh" }}>
-      <div className='w-100' style={{ maxWidth: '400px' }}>
-        <Router>
-          <ThemeProvider >
-            <AuthProvider >
-              {/* <Navbar/> */}
-              <Routes>
-                <Route 
-                  path="/dashboard" 
-                  element={
-                    <PrivateRoute >
-                      <Dashboard />
-                    </PrivateRoute>
-                  }/>
-                  <Route 
-                  path="/update-profile" 
-                  element={
-                    <PrivateRoute >
-                      <UpdateProfile />
-                    </PrivateRoute>
-                  }/>
-                <Route path="/signup" element={<Signup/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/forgot-password" element={<ForgotPassword/>}/>
-              </Routes>
-            </AuthProvider>
-          </ThemeProvider>
-        </Router>
-      </div>
-    </Container>
+    <>
+      <Container
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}>
+        <div className='w-100' style={{ maxWidth: '400px' }}>
+          <Router>
+            <ThemeProvider >
+              <AuthProvider >
+                <Routes>
+                  <Route path="/dashboard" element={<Dashboard />}/>
+                  <Route path="/update-profile" element={<UpdateProfile />}/>
+                  <Route path="/signup" element={<Signup/>}/>
+                  <Route path="/" element={<Login/>}/>
+                  <Route path="/login" element={<Login/>}/>
+                  <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                  <Route path="/leaderboard" element={<Leaderboard/>}/>
+                  <Route path="/submit-new-score" element={<SubmitNewScore/>}/>
+                  <Route path="/my-stats" element={<MyStats/>}/>
+                  <Route path="/create-username" element={<CreateUserName/>}/>
+                  <Route path="*" element={<h1>404</h1>}/>
+                </Routes>
+              </AuthProvider>
+            </ThemeProvider>
+          </Router>
+        </div>
+      </Container>
+      {/* <Navbar/> */}
+    </>
   );
 }
 
