@@ -27,6 +27,8 @@ const Leaderboard = () => {
         getPlayers();
       }, []);
 
+      const handicaps = players.map(player => player.eighteenHandicapStablefordScore)
+
    
   return (
     <>
@@ -42,6 +44,7 @@ const Leaderboard = () => {
                         key={player.id} > 
                         <strong>{player.firstName} {player.lastName} </strong>
                         <p>{player.roundsPlayed.length} rounds</p>
+                        <p>Handicap: {player.handicapIndex}</p>
                     </li>)}
                 </ul>
             </Card.Body>

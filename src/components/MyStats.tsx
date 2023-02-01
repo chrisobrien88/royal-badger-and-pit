@@ -9,7 +9,7 @@ import Axios from 'axios';
 const MyStats = () => {
     const { currentUser } = useAuth()
     const [playerRounds, setPlayerRounds] = useState<any[]>([]);
-    const userName = currentUser.email.replace(/@.*/, '')
+    const userName = currentUser.displayName
 
     
 
@@ -28,10 +28,7 @@ const MyStats = () => {
         }
       }
       getplayerRounds();
-      }, []);
-
-      console.log(playerRounds);
-      
+      }, []);      
       if (!currentUser) {
         return <Navigate to="/login" />
     }
@@ -42,6 +39,8 @@ const MyStats = () => {
     <>
         <p>User: <strong>{currentUser.email}</strong></p>
         <Link to="/submit-new-score">Submit New Score</Link>
+        <br></br>
+        <Link to="/leaderboard">Leaderboard</Link>
         <p>Rounds</p>
         <ul className='list'>
             {playerRounds.map(playerRound =>

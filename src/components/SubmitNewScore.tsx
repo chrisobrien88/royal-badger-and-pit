@@ -1,13 +1,18 @@
 import React, { useEffect, useState, useRef} from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import Axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { Button, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container, Rating, Modal, Alert } from '@mui/material'
 
 const SubmitNewScore = () => {
     const { currentUser } = useAuth()
     const userName = currentUser.displayName
 
+    const navigate = useNavigate()
+
     const [handicapIndex, setHandicapIndex] = useState<number>(0)
+    const [bestScores, setBestScores] = useState<number[]>([]);
+  
 
     const courseRef = useRef<HTMLInputElement>(null);
     const [starValue, setStarValue] = React.useState<number | null>(2);
@@ -94,31 +99,53 @@ const SubmitNewScore = () => {
     }, [slopeRatingState, courseRatingState, eighteenHandicapStablefordScore])
 
 
-    useEffect(() => {
-      const getHandicapIndex = async () => {
-        try {
-          Axios.get(`http://localhost:5000/api/players/${userName}/handicap-index`).then((response) => {
-          setHandicapIndex(response.data);
-        });
+      useEffect(() => {
+        const getHandicapIndex = async () => {
+          setLoading(true)
+          try {
+            Axios.get(`http://localhost:5000/api/players/${userName}/best-rounds`).then((response) => {
+            setHandicapIndex(response.data.handicapIndex);
+            setBestScores(response.data.scoresArr);
+          });
+          }
+          catch (err) {
+            console.log(err);
+          }
         }
-        catch (err) {
-          console.log(err);
-        }
-      }
-      getHandicapIndex();   
-      console.log(handicapIndex, 'refresh');
-         
-    }, []);
+        getHandicapIndex();
+        setLoading(false)
+      }, []);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      const updateHandicap = (newScore: number) => {
+        const bestScoresLength = bestScores.length;
+        const worstScore = bestScores[bestScoresLength - 1];
+        console.log(handicapIndex, 'original handicapIndex');
+        
+        if (newScore > worstScore && bestScoresLength > 1) {
+          setBestScores(bestScores.slice(0, bestScoresLength - 1).concat(slopeAdjustedThirtySixHandicapStablefordScore));
+          const totalBestScores = bestScores.reduce((a, b) => a + b, 0);
+          const averageBestScores = totalBestScores / bestScoresLength;
+          const newHandicapIndex = (averageBestScores - 72) * 0.88;
+          setHandicapIndex(newHandicapIndex);
+          console.log(newHandicapIndex, 'newHandicapIndex');
+      }
+        return        
+      }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       
       e.preventDefault();
       setLoading(true)
-      console.log("submitting");
-      console.log(eaglesRef, 'eagles');
+      // console.log("submitting");
+      // console.log(userName, 'userName');
+      // console.log(bestScores, 'bestScores');
+     
+      
+      
       
       try {
-        Axios.post(`http://localhost:5000/api/players/${userName}/submit-new-round`, {
+        await updateHandicap(slopeAdjustedThirtySixHandicapStablefordScore);
+        await Axios.post(`http://localhost:5000/api/players/${userName}/submit-new-round`, {
           userName: userName,
           courseHandicap: 0,
           handicapIndex: handicapIndex,
@@ -145,10 +172,16 @@ const SubmitNewScore = () => {
           slopeAdjustedThirtySixHandicapStablefordScore: slopeAdjustedThirtySixHandicapStablefordScore,
 
         }).then((response) => {
-        console.log(response);
-        console.log(courseRef.current?.value, 'poop');
-        
+          // console.log(response);
+          // console.log(courseRef.current?.value, 'poop');
+          navigate(`/my-stats`)
         });
+
+        // await Axios.put(`http://localhost:5000/api/players/${userName}/update-handicap-index`, {
+        //     userName: userName,
+        //     handicapIndex: handicapIndex,
+        // })
+        
       }
       catch (err) {
         console.log(err);
