@@ -39,7 +39,7 @@ const Signup = () => {
             setError('')
             setLoading(true)
             await signup(emailRef.current?.value, passwordRef.current?.value)
-            navigate("/create-username")
+            navigate("/create-profile")
 
 
         }

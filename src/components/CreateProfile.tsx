@@ -3,12 +3,24 @@ import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme, useThemeUpdate } from '../contexts/ThemeContext'
 import { Link, useNavigate, Navigate } from 'react-router-dom'
+import Axios from 'axios'
 
 const CreateUserName = () => {
 
+    // return(
+    //     <div>
+    //         <h1>sign up</h1>
+    //         <form onSubmit={handleSubmit}>
+    //           <input required className='nameInput' name="firstName" type='text' onChange={handleChange} />
+    //           <input required className='nameInput' name="lastName" type='text' onChange={handleChange} />
+    //           <button className='button' type='submit'>Add User</button>
+    //         </form>
+    //     </div>)
 
 
     const userNameRef = useRef<HTMLInputElement>(null)
+    const firstNameRef = useRef<HTMLInputElement>(null)
+    const lastNameRef = useRef<HTMLInputElement>(null)
     
     const navigate = useNavigate()
     const { currentUser, updateDisplayName} = useAuth()
@@ -33,6 +45,12 @@ const CreateUserName = () => {
                     console.log(userNameRef.current?.value);
                     
                     await updateDisplayName(userNameRef.current?.value)
+                    await Axios.post('http://localhost:5000/api/newplayer', {
+                        firstName: firstNameRef.current?.value,
+                        lastName: lastNameRef.current?.value,
+                        userName: userNameRef.current?.value,
+                        email: currentUser.email
+                      })
                     setMessage('Username updated')
                     setTimeout(() => {
                         navigate('/dashboard')
@@ -60,6 +78,14 @@ const CreateUserName = () => {
                     <Form.Group className="mb-3" id="email">
                         <Form.Label>Username</Form.Label>
                         <Form.Control type="userName" ref={userNameRef} required defaultValue={suggestedUserName}/>
+                    </Form.Group>
+                    <Form.Group className="mb-3" id="email">
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Control type="userName" ref={firstNameRef} required placeholder="first name"/>
+                    </Form.Group>
+                    <Form.Group className="mb-3" id="email">
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Control type="userName" ref={lastNameRef} required placeholder="last name"/>
                     </Form.Group>
                     
                     <Button disabled={loading} className="w-100" type="submit">Submit</Button>

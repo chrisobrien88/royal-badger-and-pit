@@ -15,9 +15,10 @@ const Leaderboard = () => {
           try {
             Axios.get('http://localhost:5000/api/players').then((response) => {
             setPlayers(response.data)
-          }).then(() => {
-            console.log(players.map(player => player.roundsPlayed[0]));
-            });;
+            })
+            
+            console.log(players);
+            
           }
           catch (err) {
             console.log(err);
@@ -26,21 +27,21 @@ const Leaderboard = () => {
         getPlayers();
       }, []);
 
-    
+   
   return (
     <>
         <Card>
             <Card.Body>
-                user: {currentUser.email}
+                user: {currentUser.displayName}
                 <h2 className="text-center mb-4">Leaderboard</h2>
                 {/* // create list\\\ */}
-                <h4>Most Recent Score</h4>
                 <ul className='list'>
                     {players.map(player => 
                     <li
                         className='list-item card' 
                         key={player.id} > 
-                        <strong>{player.firstName} {player.lastName} </strong> {player.roundsPlayed[0].eighteenHandicapStablefordScore} at {player.roundsPlayed[0].course}
+                        <strong>{player.firstName} {player.lastName} </strong>
+                        <p>{player.roundsPlayed.length} rounds</p>
                     </li>)}
                 </ul>
             </Card.Body>

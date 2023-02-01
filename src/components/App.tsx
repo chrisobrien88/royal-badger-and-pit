@@ -12,7 +12,7 @@ import Leaderboard from './Leaderboard';
 import SubmitNewScore from './SubmitNewScore';
 import MyStats from './MyStats';
 import Navbar from './Navbar';
-import CreateUserName from './CreateUserName';
+import CreateProfile from './CreateProfile';
 
 
 
@@ -38,7 +38,7 @@ function App() {
                   <Route path="/leaderboard" element={<Leaderboard/>}/>
                   <Route path="/submit-new-score" element={<SubmitNewScore/>}/>
                   <Route path="/my-stats" element={<MyStats/>}/>
-                  <Route path="/create-username" element={<CreateUserName/>}/>
+                  <Route path="/create-profile" element={<CreateProfile/>}/>
                   <Route path="*" element={<h1>404</h1>}/>
                 </Routes>
               </AuthProvider>
