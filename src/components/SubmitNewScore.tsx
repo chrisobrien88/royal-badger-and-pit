@@ -326,7 +326,7 @@ const SubmitNewScore = () => {
               Stableford score (off 18): {eighteenHandicapStablefordScore}
             </Typography>
             <Typography component="h5" variant="h5">
-              Slope Adjusted Score (off 18): {slopeAdjustedEighteenHandicapStablefordScore}
+              Slope Adjusted Score (off 18): {slopeAdjustedEighteenHandicapStablefordScore.toFixed(2)}
             </Typography>
             </Grid>
 

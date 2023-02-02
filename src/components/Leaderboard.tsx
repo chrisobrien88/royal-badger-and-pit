@@ -13,38 +13,44 @@ const Leaderboard = () => {
     useEffect(() => {
         const getPlayers = async () => {
           try {
-            Axios.get('http://localhost:5000/api/players').then((response) => {
+            await Axios.get('http://localhost:5000/api/players').then((response) => {
             setPlayers(response.data)
-            })
-            
-            console.log(players);
-            
+            }); 
           }
           catch (err) {
             console.log(err);
           }
         }
         getPlayers();
+        // order Players by best score
+        // players.sort((a: any, b: any) => b - a)
+
       }, []);
-
-      const handicaps = players.map(player => player.eighteenHandicapStablefordScore)
-
-   
+    
   return (
     <>
         <Card>
             <Card.Body>
-                user: {currentUser.displayName}
+                {currentUser && <p>user: {currentUser.displayName}</p>}
                 <h2 className="text-center mb-4">Leaderboard</h2>
                 {/* // create list\\\ */}
                 <ul className='list'>
-                    {players.map(player => 
+                    {players.sort((a: any, b: any) => b.totalScore - a.totalScore)
+                    .map(player => 
+                    
                     <li
                         className='list-item card' 
                         key={player.id} > 
-                        <strong>{player.firstName} {player.lastName} </strong>
+                        
+                        <strong>{player.firstName} {player.lastName}</strong>
+                        {player.roundsPlayed.length > 0 ? 
+                        <>
                         <p>{player.roundsPlayed.length} rounds</p>
                         <p>Handicap: {player.handicapIndex}</p>
+                        <p>Total Score: {player.totalScore}</p>
+                        {player.bestRounds[0]? <p>Best score: {player.bestRounds[0].eighteenHandicapStablefordScore}</p> : null}
+                        </>
+                        : <p>No rounds played</p>}
                     </li>)}
                 </ul>
             </Card.Body>

@@ -21,32 +21,33 @@ function App() {
 
   return (
     <>
-      <Container
-        className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: "100vh" }}>
-        <div className='w-100' style={{ maxWidth: '400px' }}>
+      
           <Router>
             <ThemeProvider >
               <AuthProvider >
-                <Routes>
-                  <Route path="/dashboard" element={<Dashboard />}/>
-                  <Route path="/update-profile" element={<UpdateProfile />}/>
-                  <Route path="/signup" element={<Signup/>}/>
-                  <Route path="/" element={<Login/>}/>
-                  <Route path="/login" element={<Login/>}/>
-                  <Route path="/forgot-password" element={<ForgotPassword/>}/>
-                  <Route path="/leaderboard" element={<Leaderboard/>}/>
-                  <Route path="/submit-new-score" element={<SubmitNewScore/>}/>
-                  <Route path="/my-stats" element={<MyStats/>}/>
-                  <Route path="/create-profile" element={<CreateProfile/>}/>
-                  <Route path="*" element={<h1>404</h1>}/>
-                </Routes>
+                <Container
+                  className="d-flex align-items-center justify-content-center">
+                  <div className='w-100' style={{ maxWidth: '400px', maxHeight: "90vh", overflow: "scroll"
+                 }}>
+                    <Routes>
+                      <Route path="/dashboard" element={<Dashboard />}/>
+                      <Route path="/update-profile" element={<UpdateProfile />}/>
+                      <Route path="/signup" element={<Signup/>}/>
+                      <Route path="/" element={<Login/>}/>
+                      <Route path="/login" element={<Login/>}/>
+                      <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                      <Route path="/leaderboard" element={<Leaderboard/>}/>
+                      <Route path="/submit-new-score" element={<SubmitNewScore/>}/>
+                      <Route path="/my-stats" element={<MyStats/>}/>
+                      <Route path="/create-profile" element={<CreateProfile/>}/>
+                      <Route path="*" element={<h1>404</h1>}/>
+                    </Routes>
+                  </div>
+                  <Navbar/>
+                </Container>
               </AuthProvider>
             </ThemeProvider>
           </Router>
-        </div>
-      </Container>
-      {/* <Navbar/> */}
     </>
   );
 }
