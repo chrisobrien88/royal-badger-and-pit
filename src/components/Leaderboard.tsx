@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Button} from 'react-bootstrap'
-import { useAuth } from '../contexts/AuthContext'
-import { Link, useNavigate, Navigate } from 'react-router-dom'
 import Axios from 'axios';
 import { List, ListItem, TextField, Tooltip, Grid, Box, Typography, Container, ListSubheader, ListItemText, Chip} from '@mui/material'
 import { styled } from '@mui/material/styles';
@@ -16,8 +14,6 @@ interface openState {
 
 const Leaderboard = () => {
     const [error, setError] = React.useState<string>('')
-    const { currentUser, logout } = useAuth()
-    const navigate = useNavigate()
     const [players, setPlayers] = useState<any[]>([]);
 
     const [open, setOpen] = useState<openState>({ });
@@ -42,10 +38,6 @@ const Leaderboard = () => {
         // players.sort((a: any, b: any) => b - a)
 
       }, []);
-
-      console.log(players.map((player: any) => 
-        {return player.bestRounds? player.bestRounds[0]
-          : null }));
       
     
   return (
@@ -74,7 +66,7 @@ const Leaderboard = () => {
                           <ListItemText primary={player.handicapIndex} secondary='handicap' />
                 
                           <Chip 
-                            label={`${player.totalScore} pts`} 
+                            label={`${player.totalScore.toFixed(0)} pts`} 
                             sx = {{
                               bgcolor: index < 3 ? 'gold' : 'grey.500',
 

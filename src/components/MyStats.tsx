@@ -97,7 +97,7 @@ const MyStats = () => {
                     <ListItem sx={{ 
                       flexDirection: 'row',
                       justifyContent: 'space-between',
-                      mt: 1, p: 2, 
+                      mt: 1, pl: 2, 
                       backgroundColor: 'grey.100'
                   }}>
                       {playerRound.eagles ? <ListItemText primary={playerRound.eagles} secondary="eagles" /> : null}
@@ -111,20 +111,24 @@ const MyStats = () => {
                     <ListItem sx={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
-                      p: 1,
+                      pl: 2,
                       backgroundColor: 'grey.100'
                     }}>
-                      <ListItemText primary={`Slope rating: ${playerRound.slopeRating}`}/>
-                      <ListItemText primary={`Course rating: ${playerRound.courseRating}`}/>
+                      <ListItemText primary={`${playerRound.slopeRating}`} secondary={"slope rating"}/>
+                      <ListItemText primary={`${playerRound.courseRating}`} secondary={"course rating"}/>
                     </ListItem>
 
                     <ListItem sx={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      p: 1,
                       backgroundColor: 'grey.100'
                     }}>
-                      <ListItemText primary={`Slope adjusted score: ${playerRound.slopeAdjustedEighteenHandicapStablefordScore} pts`}/>
+                      <ListItemText secondary={`Slope adjusted score:`}/>
+                      <Chip 
+                        sx={{
+                          backgroundColor: 'grey.500',
+                          color: 'white',
+                          mr: 9
+                        }}
+                        label={`${playerRound.slopeAdjustedEighteenHandicapStablefordScore.toFixed(2)} pts`}/>
                     </ListItem>
                 </List>
                 </Collapse>

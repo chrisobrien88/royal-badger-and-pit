@@ -19,14 +19,12 @@ export default function LabelBottomNavigation() {
   const { currentUser } = useAuth()
 
   const location = useLocation();
-  console.log(location.pathname.replace(/\//, ''));
 
   const [value, setValue] = React.useState(location.pathname.replace(/\//, ''));
   const navigate = useNavigate();
 
   const handleClick = (route: string) => {
     // navigate to the route
-    console.log(route);
     navigate(route);
   }
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {

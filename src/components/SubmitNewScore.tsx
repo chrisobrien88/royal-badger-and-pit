@@ -4,6 +4,11 @@ import Axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Button, TextField, Tooltip, Grid, Box, Typography, Container, Chip} from '@mui/material'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+
+
 const SubmitNewScore = () => {
     const { currentUser } = useAuth()
     const userName = currentUser.displayName
@@ -110,7 +115,6 @@ const SubmitNewScore = () => {
       const updateHandicap = (newScore: number) => {
         const bestScoresLength = bestScores.length;
         const worstScore = bestScores[bestScoresLength - 1];
-        console.log(handicapIndex, 'original handicapIndex');
         
         if (newScore > worstScore && bestScoresLength > 1) {
           setBestScores(bestScores.slice(0, bestScoresLength - 1).concat(slopeAdjustedThirtySixHandicapStablefordScore));
@@ -118,7 +122,6 @@ const SubmitNewScore = () => {
           const averageBestScores = totalBestScores / bestScoresLength;
           const newHandicapIndex = (averageBestScores - 72) * 0.88;
           setHandicapIndex(newHandicapIndex);
-          console.log(newHandicapIndex, 'newHandicapIndex');
       }
         return        
       }
@@ -197,10 +200,10 @@ const SubmitNewScore = () => {
           alignItems: 'center',
         }}
         >
-        <Typography component="h1" variant="h5">
+        <List>
         <strong>{userName}'s</strong> Scorecard
-        {handicapIndex? <div>Current Handicap Index: {handicapIndex} </div> : null}
-        </Typography>
+        {handicapIndex? <ListItemText secondary="Handicap" primary={handicapIndex} /> : null}
+        </List>
        
         <Box component="form" id="round-input-form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <Grid container spacing={2} justifyContent="center" alignItems="center"
@@ -291,7 +294,7 @@ const SubmitNewScore = () => {
             <Grid item xs={6} sm={6}>
               {holesPlayed?
               <> 
-                <Chip label={`Holes input: ${holesPlayed}`} sx={{
+                <Chip label={`Holes played: ${holesPlayed}`} sx={{
                     backgroundColor: holesPlayed === 18 ? 'success.main' : 'grey.500',
                     color: 'white',
                 }}/>
@@ -313,13 +316,13 @@ const SubmitNewScore = () => {
                       
                     }
                   }/>
-              <Chip label={`Slope Adjusted Score: ${slopeAdjustedEighteenHandicapStablefordScore.toFixed(2)} pts`} sx={
+              {/* <Chip label={`Slope Adjusted Score: ${slopeAdjustedEighteenHandicapStablefordScore.toFixed(2)} pts`} sx={
                     {
                       backgroundColor: holesPlayed === 18 ? 'success.main' : 'grey.500',
                       color: 'white',
                       mt: 1
                     }
-                  }/>
+                  }/> */}
             </Grid>
 
           <Tooltip title="Please make sure you played 18 holes">
