@@ -11,7 +11,9 @@ const Signup = () => {
 
     const themeStyles = {
         backgroundColor: darkTheme ? '#333' : '#ffffff',
-        color: darkTheme ? '#CCC' : '#333'
+        color: darkTheme ? '#CCC' : '#333',
+        marginTop: '20px',
+
     }
 
     const themeButtonStyles = {

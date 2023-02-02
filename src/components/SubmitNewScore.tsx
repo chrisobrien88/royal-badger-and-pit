@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef} from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import Axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { Button, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container, Rating, Modal, Alert } from '@mui/material'
-
+import { Button, TextField, Tooltip, Grid, Box, Typography, Container, Chip} from '@mui/material'
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 const SubmitNewScore = () => {
     const { currentUser } = useAuth()
     const userName = currentUser.displayName
@@ -13,17 +13,8 @@ const SubmitNewScore = () => {
     const [handicapIndex, setHandicapIndex] = useState<number>(0)
     const [bestScores, setBestScores] = useState<number[]>([]);
   
-
     const courseRef = useRef<HTMLInputElement>(null);
-    const [starValue, setStarValue] = React.useState<number | null>(2);
-
-    const eaglesRef = useRef<Number>(0);
-    const birdiesRef = useRef<Number>(0);
-    const parsRef = useRef<Number>(0);
-    const bogeysRef = useRef<Number>(0);
-    const doubleBogeysRef = useRef<Number>(0);
-    const tripleBogeysRef = useRef<Number>(0);
-    const blobsRef = useRef<Number>(0);
+    const [starValue, setStarValue] = React.useState<number | null>(3);
 
     const [eaglesState, setEaglesState] = useState<number>(0);
     const [birdiesState, setBirdiesState] = useState<number>(0);
@@ -136,12 +127,6 @@ const SubmitNewScore = () => {
       
       e.preventDefault();
       setLoading(true)
-      // console.log("submitting");
-      // console.log(userName, 'userName');
-      // console.log(bestScores, 'bestScores');
-     
-      
-      
       
       try {
         await updateHandicap(slopeAdjustedThirtySixHandicapStablefordScore);
@@ -172,16 +157,8 @@ const SubmitNewScore = () => {
           slopeAdjustedThirtySixHandicapStablefordScore: slopeAdjustedThirtySixHandicapStablefordScore,
 
         }).then((response) => {
-          // console.log(response);
-          // console.log(courseRef.current?.value, 'poop');
           navigate(`/my-stats`)
         });
-
-        // await Axios.put(`http://localhost:5000/api/players/${userName}/update-handicap-index`, {
-        //     userName: userName,
-        //     handicapIndex: handicapIndex,
-        // })
-        
       }
       catch (err) {
         console.log(err);
@@ -221,15 +198,13 @@ const SubmitNewScore = () => {
         }}
         >
         <Typography component="h1" variant="h5">
-        Golfer: <strong>{userName}</strong>
-        <div>Current Handicap Index: {handicapIndex}</div>
+        <strong>{userName}'s</strong> Scorecard
+        {handicapIndex? <div>Current Handicap Index: {handicapIndex} </div> : null}
         </Typography>
        
-        <Typography component="h1" variant="h5">
-          Submit New Score
-        </Typography>
         <Box component="form" id="round-input-form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justifyContent="center" alignItems="center"
+          >
             <Grid item xs={20} sm={12}>
               <TextField
                 required
@@ -238,8 +213,8 @@ const SubmitNewScore = () => {
                 inputRef = {courseRef}
                 autoFocus/>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              Star rating
+            {/* <Grid item xs={20} sm={12}>
+              <p>Course out of 5</p>
               <Rating
                 name="Out of 5 Stars"
                 value={starValue}
@@ -247,8 +222,8 @@ const SubmitNewScore = () => {
                   setStarValue(newValue);
                 }}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid> */}
+            <Grid item xs={6} sm={6}>
               <TextField
                 required
                 fullWidth
@@ -258,7 +233,7 @@ const SubmitNewScore = () => {
                 onChange={e => setSlopeRatingState(Number(e.target.value))}
                 defaultValue="125"/>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={6} sm={6}>
               <TextField
                 required
                 fullWidth
@@ -268,90 +243,94 @@ const SubmitNewScore = () => {
                 defaultValue="72"/>
             </Grid>
             
-            <Grid item xs={5} sm={6}>
+            <Grid item xs={6} sm={6}>
               <TextField
                 type={"number"}
                 label="Eagles"
-                inputRef = {eaglesRef}
                 onChange={e => setEaglesState(Number(e.target.value))}
                 />
             </Grid>
-            <Grid item xs={5} sm={6}>
+            <Grid item xs={6} sm={6}>
               <TextField
                 type={"number"}
                 label="Birdies"
-                inputRef = {birdiesRef}
                 onChange={e => setBirdiesState(Number(e.target.value))}/>
             </Grid>
-            <Grid item xs={5} sm={6}>
+            <Grid item xs={6} sm={6}>
               <TextField
                 type={"number"}
                 label="Pars"
-                inputRef = {parsRef}
                 onChange={e => setParsState(Number(e.target.value))}/>
             </Grid>
-            <Grid item xs={5} sm={6}>
+            <Grid item xs={6} sm={6}>
               <TextField
                 type={"number"}
                 label="Bogeys"
-                inputRef = {bogeysRef}
                 onChange={e => setBogeysState(Number(e.target.value))}/>
             </Grid>
-            <Grid item xs={5} sm={6}>
+            <Grid item xs={6} sm={6}>
               <TextField
                 type={"number"}
                 label="Double Bogeys"
-                inputRef = {doubleBogeysRef}
                 onChange={e => setDoubleBogeysState(Number(e.target.value))}/>
             </Grid>
-            <Grid item xs={5} sm={6}>
+            <Grid item xs={6} sm={6}>
               <TextField
                 type={"number"}
                 label="Triple Bogeys"
-                inputRef = {tripleBogeysRef}
                 onChange={e => setTripleBogeysState(Number(e.target.value))}/>
             </Grid>
-            <Grid item xs={5} sm={6}>
+
+            <Grid item xs={6} sm={6}>
               <TextField
                 type={"number"}
                 label="Blobs"
-                inputRef = {blobsRef}
                 onChange={e => setBlobsState(Number(e.target.value))}/>
             </Grid>
-            <Grid item xs={12} sm={12}>
-            <Typography component="h5" variant="h5">
-              Holes played: {holesPlayed}
-            </Typography>
-            <Typography component="h5" variant="h5">
-              Stableford score (off 18): {eighteenHandicapStablefordScore}
-            </Typography>
-            <Typography component="h5" variant="h5">
-              Slope Adjusted Score (off 18): {slopeAdjustedEighteenHandicapStablefordScore.toFixed(2)}
-            </Typography>
+
+            <Grid item xs={6} sm={6}>
+              {holesPlayed?
+              <> 
+                <Chip label={`Holes input: ${holesPlayed}`} sx={{
+                    backgroundColor: holesPlayed === 18 ? 'success.main' : 'grey.500',
+                    color: 'white',
+                }}/>
+                {holesPlayed === 18? <CheckCircleRoundedIcon color='success' />: null}
+              </> : null}
+              
+            </Grid>
+          </Grid>
+
+          <Grid item xs={10} sm={12} mt={1} mb={1} p={1} style={{
+              borderRadius: '5px',
+              
+            }}>
+             
+              <Chip label={`Score: ${eighteenHandicapStablefordScore} pts`} sx={
+                    {
+                      backgroundColor: holesPlayed === 18 ? 'success.main' : 'grey.500',
+                      color: 'white',
+                      
+                    }
+                  }/>
+              <Chip label={`Slope Adjusted Score: ${slopeAdjustedEighteenHandicapStablefordScore.toFixed(2)} pts`} sx={
+                    {
+                      backgroundColor: holesPlayed === 18 ? 'success.main' : 'grey.500',
+                      color: 'white',
+                      mt: 1
+                    }
+                  }/>
             </Grid>
 
-          </Grid>
-        <Button disabled={incorrectHolesPlayed} className="w-100" type='submit'>Submit</Button>
+          <Tooltip title="Please make sure you played 18 holes">
+            <span>
+            <Button disabled={holesPlayed !== 18} className="w-100" variant="contained" type='submit'>Submit</Button>
+            </span>
+          </Tooltip>
+
         </Box>
+        <br></br>
       </Box>
-
-      {/* <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-
-        <Box sx={style}>
-          <h2 id="modal-modal-title">Modal title</h2>
-          <p id="modal-modal-description">
-            <h2>Course Name:</h2> {courseRef.current?.value}
-          </p>
-        <Button onClick={handleClose}>Edit</Button>
-        <Button form="round-input-form" type="submit">Submit</Button>
-        </Box>
-      </Modal> */}
-
     </Container>
     </>
   )

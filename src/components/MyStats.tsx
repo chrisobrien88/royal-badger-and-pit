@@ -1,18 +1,42 @@
 import React, { useState, useEffect} from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import { useNavigate, Navigate, Link } from 'react-router-dom'
-import { Card } from 'react-bootstrap'
+import { Navigate } from 'react-router-dom'
 import Axios from 'axios';
+import { List, ListItem, Button, TextField, Tooltip, Grid, Box, Typography, Container} from '@mui/material'
+import { styled } from '@mui/material/styles';
+import ListSubheader from '@mui/material/ListSubheader';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Collapse from '@mui/material/Collapse';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import SendIcon from '@mui/icons-material/Send';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import StarBorder from '@mui/icons-material/StarBorder';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Chip from '@mui/material/Chip';
+import Card from '@mui/material/Card';
 
 
+// const list = new MDCList(document.querySelector('.mdc-list'));
+
+
+interface openState {
+  [key: string]: boolean;
+}
 
 const MyStats = () => {
     const { currentUser } = useAuth()
     const [playerRounds, setPlayerRounds] = useState<any[]>([]);
+    const [bestRoundsScores, setBestRoundsScores] = useState<number[]>([]);
     const userName = currentUser.displayName
+    const [open, setOpen] = useState<openState>({ });
 
+    const handleClick = (id: any) => {
+      setOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
+    };
     
-
     useEffect(() => {
         const getplayerRounds = async () => {
           if(currentUser) {
@@ -20,6 +44,7 @@ const MyStats = () => {
           try {
             Axios.get(`http://localhost:5000/api/players/${userName}`).then((response) => {
             setPlayerRounds(response.data.roundsPlayed);
+            setBestRoundsScores(response.data.bestRounds.map((round: any) => round.slopeAdjustedEighteenHandicapStablefordScore));
           });
           }
           catch (err) {
@@ -33,23 +58,82 @@ const MyStats = () => {
         return <Navigate to="/login" />
     }
 
-    
-
   return (
     <>
-        <p>User: <strong>{currentUser.email}</strong></p>
-        <Link to="/submit-new-score">Submit New Score</Link>
-        <br></br>
-        <Link to="/leaderboard">Leaderboard</Link>
-        <p>Rounds</p>
-        <ul className='list'>
+        <List 
+          sx={{ width: '100%', maxWidth: 360, mt: 2 }}
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+          subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+              My Rounds
+          </ListSubheader>}>
+
             {playerRounds.map(playerRound =>
-            <li
+              <Card 
+                key={playerRound.id}
                 className='list-item card'
-                key={playerRound.id} >
-                <strong>{playerRound.course} </strong> {playerRound.eighteenHandicapStablefordScore}
-            </li>)}
-        </ul>
+                sx={{ mt: 1 }}
+                >
+                <ListItem 
+                    sx={{ mt: 1, flexDirection: 'row' }}
+                    onClick={() => handleClick(playerRound.id)} >
+                  <ListItemText secondary={playerRound.datePlayed.slice(0,10)} primary={playerRound.course} />
+                  <Chip label={`${playerRound.eighteenHandicapStablefordScore} pts`} sx={
+                    {
+                      backgroundColor: bestRoundsScores[2] && playerRound.slopeAdjustedEighteenHandicapStablefordScore >= bestRoundsScores[2] ? 'success.main' : 'grey.500',
+                      color: 'white',
+                      ml: 1
+                    }
+                  } />
+                  
+                  {open[playerRound.id] ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+
+
+
+                <Collapse in={open[playerRound.id]} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    <ListItem sx={{ 
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      mt: 1, p: 2, 
+                      backgroundColor: 'grey.100'
+                  }}>
+                      {playerRound.eagles ? <ListItemText primary={playerRound.eagles} secondary="eagles" /> : null}
+                      {playerRound.birdies ? <ListItemText primary={playerRound.birdies} secondary="birdies" /> : null}
+                      {playerRound.pars ? <ListItemText primary={playerRound.pars} secondary="pars" /> : null}
+                      {playerRound.bogeys ? <ListItemText primary={playerRound.bogeys} secondary="bogeys" /> : null}
+                      {playerRound.doubleBogeys ? <ListItemText primary={playerRound.doubleBogeys} secondary="double bogeys" /> : null}
+                      {playerRound.tripleBogeys ? <ListItemText primary={playerRound.tripleBogeys} secondary="triple bogeys" /> : null}
+                      {playerRound.blobs ? <ListItemText primary={playerRound.blobs} secondary="4+" /> : null}
+                    </ListItem>
+                    <ListItem sx={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      p: 1,
+                      backgroundColor: 'grey.100'
+                    }}>
+                      <ListItemText primary={`Slope rating: ${playerRound.slopeRating}`}/>
+                      <ListItemText primary={`Course rating: ${playerRound.courseRating}`}/>
+                    </ListItem>
+
+                    <ListItem sx={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      p: 1,
+                      backgroundColor: 'grey.100'
+                    }}>
+                      <ListItemText primary={`Slope adjusted score: ${playerRound.slopeAdjustedEighteenHandicapStablefordScore} pts`}/>
+                    </ListItem>
+                </List>
+                </Collapse>
+
+
+
+              </Card>
+            )}
+        </List>
     </>
   )
 }

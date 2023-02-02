@@ -36,32 +36,34 @@ export default function LabelBottomNavigation() {
 
   return (
     
-    <BottomNavigation sx={{ width: 375, position: 'fixed', bottom: 0, zIndex: 1000
+    <BottomNavigation sx={{ 
+      width: 375, position: 'fixed', bottom: 0, zIndex: 1000, backgroundColor: "#326d32", color: "white",
+      boxShadow: "0 -1px 10px 0 #626262be"
      }} value={value} onChange={handleChange} >
       <BottomNavigationAction onClick={() => handleClick('/my-stats')}
         label="My stats"
         value="my-stats"
         disabled={currentUser? false : true}
-        style={{color: currentUser? 'green' : 'grey'}}
+        style={{color: currentUser? 'white' : 'grey'}}
         icon={<TimelineRoundedIcon />}
       />
         <BottomNavigationAction onClick={() => handleClick('/submit-new-score')}
           label="New Score"
           value="submit-new-score"
           disabled={currentUser? false : true}
-          style={{color: currentUser? 'green' : 'grey'}}
+          style={{color: currentUser? 'white' : 'grey'}}
           icon={<AddBoxRoundedIcon />}
         />
       <BottomNavigationAction onClick={() => handleClick('/leaderboard')}
         label="Leaderboard"
         value="leaderboard"
-        style={{color: 'green' }}
+        style={{color: 'white' }}
         icon={<LeaderboardIcon />}
       />
       <BottomNavigationAction onClick={() => {currentUser? handleClick('/dashboard') : handleClick('/login')}}
         label="Dashboard"
         value="dashboard"
-        style={{color: 'green' }}
+        style={{color: 'white' }}
         icon={<PersonRoundedIcon />}
       />
     </BottomNavigation>

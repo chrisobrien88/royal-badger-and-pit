@@ -30,20 +30,22 @@ const Dashboard = () => {
 
   return (
     <>
-      <Card>
+      <Card 
+        style={{ width: '100%', maxWidth: '400px', margin: 'auto', marginTop: '20px'  }}
+        >
         <Card.Body>
           <h2 className="text-center mb-4">Profile</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <strong>Email:</strong> {currentUser.email}
           <br />
           <strong>Username:</strong> {currentUser.displayName}
-          <Link to="/submit-new-score" className="btn btn-primary w-100 mt-3">Submit new score</Link>
           <Link to="/update-profile" className="btn btn-primary w-100 mt-3">Update Profile</Link>
-          <Link to="/leaderboard" className="btn btn-primary w-100 mt-3">View Leaderboard</Link>
-          <Link to="/my-stats"  className="btn btn-primary w-100 mt-3">View My Stats</Link>
+          
+          <Link to="login" className="btn btn-primary w-100 mt-3" onClick={handleLogOut}>Log Out</Link>
+
+
         </Card.Body>
       </Card>
-      <Link to="login" onClick={handleLogOut}>Log Out</Link>
     </>
   )
 }
