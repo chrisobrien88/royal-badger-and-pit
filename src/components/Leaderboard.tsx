@@ -26,14 +26,7 @@ const Leaderboard = () => {
         const getPlayers = async () => {
           try {
             await Axios.get('https://cerise-iguana-kit.cyclic.app/api/players').then((response) => {
-            const players = response.data.map(
-              (player: any) => {
-                if (player.roundsPlayed.length > 0) {
-                  return player
-                }
-              }
-            )
-            setPlayers(players)
+            setPlayers(response.data)
             }); 
           }
           catch (err) {
@@ -93,7 +86,8 @@ const Leaderboard = () => {
                             }>
                             <ListItem sx={{ pl: 4 }}>
                               <ListItemText primary={`${player.roundsPlayed.length}`} secondary="rounds played" />
-                              <ListItemText primary={`${player.roundsPlayed[0].eighteenHandicapStablefordScore} pts`} secondary="last round" />
+                              {player.roundsPlayed[0]?
+                              <ListItemText primary={`${player.roundsPlayed[0].eighteenHandicapStablefordScore} pts`} secondary="last round" />: null}
 
                             </ListItem>
                             <ListSubheader component="div" id="nested-list-subheader">
