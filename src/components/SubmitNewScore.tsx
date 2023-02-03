@@ -99,7 +99,7 @@ const SubmitNewScore = () => {
         const getHandicapIndex = async () => {
           setLoading(true)
           try {
-            Axios.get(`http://localhost:5000/api/players/${userName}/best-rounds`).then((response) => {
+            Axios.get(`https://cerise-iguana-kit.cyclic.app/api/players/${userName}/best-rounds`).then((response) => {
             setHandicapIndex(response.data.handicapIndex);
             setBestScores(response.data.scoresArr);
           });
@@ -133,7 +133,7 @@ const SubmitNewScore = () => {
       
       try {
         await updateHandicap(slopeAdjustedThirtySixHandicapStablefordScore);
-        await Axios.post(`http://localhost:5000/api/players/${userName}/submit-new-round`, {
+        await Axios.post(`https://cerise-iguana-kit.cyclic.app/api/players/${userName}/submit-new-round`, {
           userName: userName,
           courseHandicap: 0,
           handicapIndex: handicapIndex,

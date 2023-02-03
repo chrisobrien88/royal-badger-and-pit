@@ -25,7 +25,7 @@ const Leaderboard = () => {
     useEffect(() => {
         const getPlayers = async () => {
           try {
-            await Axios.get('http://localhost:5000/api/players').then((response) => {
+            await Axios.get('https://cerise-iguana-kit.cyclic.app/api/players').then((response) => {
             setPlayers(response.data)
             }); 
           }

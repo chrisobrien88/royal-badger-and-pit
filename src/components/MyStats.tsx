@@ -42,7 +42,7 @@ const MyStats = () => {
           if(currentUser) {
             
           try {
-            Axios.get(`http://localhost:5000/api/players/${userName}`).then((response) => {
+            Axios.get(`https://cerise-iguana-kit.cyclic.app/api/players/${userName}`).then((response) => {
             setPlayerRounds(response.data.roundsPlayed);
             setBestRoundsScores(response.data.bestRounds.map((round: any) => round.slopeAdjustedEighteenHandicapStablefordScore));
           });

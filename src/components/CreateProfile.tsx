@@ -45,7 +45,7 @@ const CreateUserName = () => {
                     console.log(userNameRef.current?.value);
                     
                     await updateDisplayName(userNameRef.current?.value)
-                    await Axios.post('http://localhost:5000/api/newplayer', {
+                    await Axios.post('https://cerise-iguana-kit.cyclic.app/api/newplayer', {
                         firstName: firstNameRef.current?.value,
                         lastName: lastNameRef.current?.value,
                         userName: userNameRef.current?.value,
