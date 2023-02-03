@@ -1,3 +1,9 @@
+Please feel free to visit and play around with my app here:
+
+https://royal-badger-and-px2wc09tl-chrisobrien88.vercel.app/
+
+It is currently in testing phase so please sign up, input some fake scores and have a look around!
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
