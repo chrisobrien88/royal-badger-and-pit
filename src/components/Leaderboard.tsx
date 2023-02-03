@@ -26,7 +26,14 @@ const Leaderboard = () => {
         const getPlayers = async () => {
           try {
             await Axios.get('https://cerise-iguana-kit.cyclic.app/api/players').then((response) => {
-            setPlayers(response.data)
+            const players = response.data.map(
+              (player: any) => {
+                if (player.roundsPlayed.length > 0) {
+                  return player
+                }
+              }
+            )
+            setPlayers(players)
             }); 
           }
           catch (err) {
