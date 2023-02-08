@@ -15,7 +15,10 @@ const SubmitNewScore = () => {
     const navigate = useNavigate()
 
     const [handicapIndex, setHandicapIndex] = useState<number>(0)
+    const [courseHandicap, setCourseHandicap] = useState<number>(0)
     const [bestScores, setBestScores] = useState<number[]>([]);
+
+    const [loading, setLoading] = useState<boolean>(false);
   
     const courseRef = useRef<HTMLInputElement>(null);
     const [starValue, setStarValue] = React.useState<number | null>(3);
@@ -34,8 +37,6 @@ const SubmitNewScore = () => {
     const [slopeRatingState, setSlopeRatingState] = useState<number>(125);
     const [courseRatingState, setCourseRatingState] = useState<number>(72);
 
-    const [loading, setLoading] = useState<boolean>(false)
-    const [incorrectHolesPlayed, setIncorrectHolesPlayed] = useState<boolean>(true)
 
     const [holesPlayed, setHolesPlayed] = useState<number>(0);
     const [grossStablefordScore, setGrossStablefordScore] = useState<number>(0);
@@ -45,11 +46,7 @@ const SubmitNewScore = () => {
     const [slopeAdjustedEighteenHandicapStablefordScore, setSlopeAdjustedEighteenHandicapStablefordScore] = useState<number>(0);
     const [slopeAdjustedThirtySixHandicapStablefordScore, setSlopeAdjustedThirtySixHandicapStablefordScore] = useState<number>(0);
 
-    useEffect (() => {
-      if (holesPlayed === 18) {
-        setIncorrectHolesPlayed(false)
-      }
-    }, [holesPlayed])
+   
 
     useEffect(() => {
       
@@ -168,25 +165,10 @@ const SubmitNewScore = () => {
       setLoading(false)
     }
 
-    // const [open, setOpen] = React.useState(false);
-
-    // const handleOpen = (e: React.FormEvent<HTMLFormElement>) => {
-    //   e.preventDefault();
-    //   setOpen(true)
-    // };
-
-    // const handleClose = () => setOpen(false);
-    // const style = {
-    //   position: 'absolute' as 'absolute',
-    //   top: '50%',
-    //   left: '50%',
-    //   transform: 'translate(-50%, -50%)',
-    //   width: 400,
-    //   bgcolor: 'background.paper',
-    //   border: '2px solid #000',
-    //   boxShadow: 24,
-    //   p: 4,
-    // };
+    useEffect(() => {
+      const courseHandicap = Math.round(handicapIndex * (slopeRatingState / 113));
+      setCourseHandicap(courseHandicap);
+    }, [handicapIndex, slopeRatingState])
 
   return (
     <>
@@ -201,7 +183,11 @@ const SubmitNewScore = () => {
         >
         <List>
         <strong>{userName}'s</strong> Scorecard
-        {handicapIndex? <ListItemText secondary="Handicap" primary={handicapIndex} /> : null}
+        {handicapIndex? 
+        <>
+          <ListItemText secondary="Handicap" primary={handicapIndex}/> 
+          <ListItemText secondary="Course Handicap" primary={courseHandicap}/>
+         </>: null}
         </List>
        
         <Box component="form" id="round-input-form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -215,16 +201,6 @@ const SubmitNewScore = () => {
                 inputRef = {courseRef}
                 autoFocus/>
             </Grid>
-            {/* <Grid item xs={20} sm={12}>
-              <p>Course out of 5</p>
-              <Rating
-                name="Out of 5 Stars"
-                value={starValue}
-                onChange={(event, newValue) => {
-                  setStarValue(newValue);
-                }}
-              />
-            </Grid> */}
             <Grid item xs={6} sm={6}>
               <TextField
                 required
@@ -303,25 +279,40 @@ const SubmitNewScore = () => {
             </Grid>
           </Grid>
 
-          <Grid item xs={10} sm={12} mt={1} mb={1} p={1} style={{
+            <Grid item xs={10} sm={12} mt={1} mb={1} p={1} style={{
               borderRadius: '5px',
-              
-            }}>
-             
-              <Chip label={`Score: ${eighteenHandicapStablefordScore} pts`} sx={
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              }}>
+                <Typography variant="body2" color="text.secondary" align="center">
+                RBPS Score:  
+                </Typography>
+                <Chip label={`${eighteenHandicapStablefordScore} pts`} sx={
                     {
                       backgroundColor: holesPlayed === 18 ? 'success.main' : 'grey.500',
                       color: 'white',
+                      ml: 1,
+                    }
+                  }/>
+            </Grid>
+            <Grid item xs={10} sm={12} mt={1} mb={1} p={1} style={{
+              borderRadius: '5px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              }}>
+                <Typography variant="body2" color="text.secondary" align="center">
+                Stableford (estimated):  
+                </Typography>
+                <Chip label={`${eighteenHandicapStablefordScore + courseHandicap - 18} pts`} sx={
+                    {
+                      backgroundColor: holesPlayed === 18 ? 'success.main' : 'grey.500',
+                      color: 'white',
+                      ml: 1,
                       
                     }
                   }/>
-              {/* <Chip label={`Slope Adjusted Score: ${slopeAdjustedEighteenHandicapStablefordScore.toFixed(2)} pts`} sx={
-                    {
-                      backgroundColor: holesPlayed === 18 ? 'success.main' : 'grey.500',
-                      color: 'white',
-                      mt: 1
-                    }
-                  }/> */}
             </Grid>
 
           <Tooltip title="Please make sure you played 18 holes">
