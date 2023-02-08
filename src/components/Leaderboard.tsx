@@ -7,6 +7,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import { Audio } from 'react-loader-spinner'
 
 interface openState {
   [key: string]: boolean;
@@ -15,6 +16,7 @@ interface openState {
 const Leaderboard = () => {
     const [error, setError] = React.useState<string>('')
     const [players, setPlayers] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [open, setOpen] = useState<openState>({ });
 
@@ -23,10 +25,12 @@ const Leaderboard = () => {
     };
 
     useEffect(() => {
+      setLoading(true)
         const getPlayers = async () => {
           try {
             await Axios.get('https://cerise-iguana-kit.cyclic.app/api/players').then((response) => {
             setPlayers(response.data)
+            setLoading(false)
             }); 
           }
           catch (err) {
@@ -34,12 +38,9 @@ const Leaderboard = () => {
           }
         }
         getPlayers();
-        // order Players by best score
-        // players.sort((a: any, b: any) => b - a)
-
+        
       }, []);
       
-    
   return (
     <>
         <List
@@ -51,7 +52,15 @@ const Leaderboard = () => {
               Leaderboard
           </ListSubheader>}>
 
-                    {players.sort((a: any, b: any) => b.totalScore - a.totalScore)
+          {loading ? 
+          (<Audio
+           height="80"
+           width="400"
+           color="green"
+           ariaLabel="loading"
+         /> ) :
+
+                    players.sort((a: any, b: any) => b.totalScore - a.totalScore)
                     .map((player, index) => 
                   
                     <Card
@@ -122,9 +131,8 @@ const Leaderboard = () => {
                           </List>
                         </Collapse>
                     </Card>
-                    )}
-                
-            
+                   )
+                }
         </List>
 
     </>

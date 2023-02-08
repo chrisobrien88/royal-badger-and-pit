@@ -6,17 +6,13 @@ import { List, ListItem, Button, TextField, Tooltip, Grid, Box, Typography, Cont
 import { styled } from '@mui/material/styles';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Collapse from '@mui/material/Collapse';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import SendIcon from '@mui/icons-material/Send';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Chip from '@mui/material/Chip';
 import Card from '@mui/material/Card';
+
+import { Audio } from 'react-loader-spinner'
 
 
 // const list = new MDCList(document.querySelector('.mdc-list'));
@@ -32,12 +28,14 @@ const MyStats = () => {
     const [bestRoundsScores, setBestRoundsScores] = useState<number[]>([]);
     const userName = currentUser.displayName
     const [open, setOpen] = useState<openState>({ });
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleClick = (id: any) => {
       setOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
     };
     
     useEffect(() => {
+      setLoading(true)
         const getplayerRounds = async () => {
           if(currentUser) {
             
@@ -45,6 +43,7 @@ const MyStats = () => {
             Axios.get(`https://cerise-iguana-kit.cyclic.app/api/players/${userName}`).then((response) => {
             setPlayerRounds(response.data.roundsPlayed);
             setBestRoundsScores(response.data.bestRounds.map((round: any) => round.slopeAdjustedEighteenHandicapStablefordScore));
+            setLoading(false)
           });
           }
           catch (err) {
@@ -69,7 +68,12 @@ const MyStats = () => {
               My Rounds
           </ListSubheader>}>
 
-            {playerRounds.map(playerRound =>
+            {loading ? 
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                <Audio height="80" width="400" color="green" ariaLabel="loading" />
+              </Box>
+            :
+            playerRounds.map(playerRound =>
               <Card 
                 key={playerRound.id}
                 className='list-item card'

@@ -6,7 +6,6 @@ import Dashboard from './Dashboard';
 import Login from './Login';
 import { ThemeProvider} from '../contexts/ThemeContext';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
 import UpdateProfile from './UpdateProfile';
 import Leaderboard from './Leaderboard';
 import SubmitNewScore from './SubmitNewScore';

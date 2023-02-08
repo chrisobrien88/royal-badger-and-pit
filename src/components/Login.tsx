@@ -3,6 +3,7 @@ import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { useTheme } from '../contexts/ThemeContext'
 import { Link, useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 const Login = () => {
 
@@ -13,6 +14,8 @@ const Login = () => {
         color: darkTheme ? '#CCC' : '#333',
         marginTop: '20px',
     }
+
+    const { currentUser } = useAuth()
 
     const emailRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
@@ -36,6 +39,10 @@ const Login = () => {
             setError('Failed to log in')
         }
         setLoading(false)
+    }
+
+    if (currentUser) {
+        return <Navigate to="/submit-new-score" />
     }
 
   return (
