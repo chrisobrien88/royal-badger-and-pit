@@ -70,9 +70,7 @@ const Login = () => {
         <div className="w-100 text-center mt-2">
             Need an account? <Link to="/signup">Sign Up</Link>
         </div>
-        <div className="w-100 text-center mt-2">
-            Last Update {new Date(Date.now()).toString().slice(0, 21)}
-        </div>
+        
     </>
   )
 }
