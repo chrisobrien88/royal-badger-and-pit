@@ -43,11 +43,12 @@ const Dashboard = () => {
           
           <Link to="login" className="btn btn-primary w-100 mt-3" onClick={handleLogOut}>Log Out</Link>
 
-          <div className="w-100 text-center mt-2">
-            Last Update {new Date(Date.now()).toString().slice(0, 21)}
-          </div>
+          
         </Card.Body>
       </Card>
+      <div className="w-100 text-center mt-2">
+            Last Updated by COB on: {new Date(Date.now()).toString().slice(4, 21)}
+      </div>
     </>
   )
 }
