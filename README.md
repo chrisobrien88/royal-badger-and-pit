@@ -1,8 +1,19 @@
 Please feel free to visit and play around with my app here:
 
-https://royal-badger-and-px2wc09tl-chrisobrien88.vercel.app/
+https://royal-badger-and-pit.vercel.app/
 
 It is currently in testing phase so please sign up, input some fake scores and have a look around!
+
+# Current funcitonality:
+  Users can:  - signup and create a unique username
+              - input a new score 
+              - view the leaderboard of ALL users (a user's score is their top 3 scores with an 18-handicap)
+              - calculates the user's handicap index
+              - user can view stats from their previous rounds
+              
+# In development:
+              - users will be able to create their own leagues for friends and family
+              - improved UI
 
 # Getting Started with Create React App
 
