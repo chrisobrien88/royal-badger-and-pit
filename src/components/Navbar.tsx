@@ -26,11 +26,14 @@ export default function LabelBottomNavigation() {
     setValue(newValue);
   };
 
+  const windowHeight = window.innerHeight*0.1;
+
+
   return (
     <BottomNavigation
       sx={{
         width: 1,
-        height: "10vh",
+        height: windowHeight,
         position: "fixed",
         bottom: 0,
         zIndex: 10,

@@ -13,7 +13,7 @@ import MyStats from './MyStats';
 import Navbar from './Navbar';
 import CreateProfile from './CreateProfile';
 
-
+const windowHeight = window.innerHeight*0.9;
 
 function App() {
 
@@ -27,7 +27,7 @@ function App() {
                 <Container
                   className="d-flex align-items-center justify-content-center">
                   <div className='w-100' style={{ 
-                    maxWidth: '400px', height: "90vh", overflow: "scroll"
+                    width: 1, height: windowHeight, overflow: "scroll"
                   }}>
                     <Routes>
                       <Route path="/dashboard" element={<Dashboard />}/>
