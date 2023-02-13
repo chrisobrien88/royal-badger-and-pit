@@ -27,7 +27,7 @@ function App() {
                 <Container
                   className="d-flex align-items-center justify-content-center">
                   <div className='w-100' style={{ 
-                    maxWidth: '400px', maxHeight: "90vh", overflow: "scroll"
+                    maxWidth: '400px', height: "90vh", overflow: "scroll"
                   }}>
                     <Routes>
                       <Route path="/dashboard" element={<Dashboard />}/>
