@@ -26,8 +26,7 @@ export default function LabelBottomNavigation() {
     setValue(newValue);
   };
 
-  const windowHeight = window.innerHeight*0.1;
-
+  const windowHeight = window.innerHeight * 0.1;
 
   return (
     <BottomNavigation

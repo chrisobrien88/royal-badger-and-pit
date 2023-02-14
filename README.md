@@ -14,6 +14,7 @@ It is currently in testing phase so please sign up, input some fake scores and h
 # In development:
               - users will be able to create their own leagues for friends and family
               - improved UI
+              - update type interfaces (current version is lazy TS)
 
 # Getting Started with Create React App
 
