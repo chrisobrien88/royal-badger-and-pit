@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
-import Axios from "axios";
 import {
   List,
   ListItem,
@@ -17,33 +16,16 @@ interface openState {
   [key: string]: boolean;
 }
 
-const Leaderboard = () => {
+const Leaderboard = ({loading, players }: any) => {
   const [error, setError] = React.useState<string>("");
-  const [players, setPlayers] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  
 
   const [open, setOpen] = useState<openState>({});
 
   const handleClick = (id: any) => {
     setOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
   };
-
-  useEffect(() => {
-    setLoading(true);
-    const getPlayers = async () => {
-      try {
-        await Axios.get(
-          "https://cerise-iguana-kit.cyclic.app/api/players"
-        ).then((response) => {
-          setPlayers(response.data);
-          setLoading(false);
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getPlayers();
-  }, []);
+  
 
   return (
     <>
@@ -74,7 +56,7 @@ const Leaderboard = () => {
         ) : (
           players
             .sort((a: any, b: any) => b.totalScore - a.totalScore)
-            .map((player, index) => (
+            .map((player: any, index: any) => (
               <Card key={player.id} className="list-item card">
                 <ListItem
                   sx={{ mt: 1, flexDirection: "row" }}

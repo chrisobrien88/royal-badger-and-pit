@@ -22,6 +22,7 @@ const Signup = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
+  const badgerPasswordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { signup } = useAuth();
 
@@ -30,6 +31,9 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (badgerPasswordRef.current?.value !== "rbps2023") {
+      return setError("Incorrect RBPS League Password");
+    }
 
     if (passwordRef.current?.value !== passwordConfirmRef.current?.value) {
       return setError("Passwords do not match");
@@ -68,6 +72,10 @@ const Signup = () => {
             <Form.Group className="mb-3" id="password-confirm">
               <Form.Label>Password Confirmation</Form.Label>
               <Form.Control type="password" ref={passwordConfirmRef} required />
+            </Form.Group>
+            <Form.Group className="mb-3" id="password-confirm">
+              <Form.Label>RBPS League Password</Form.Label>
+              <Form.Control type="password" ref={badgerPasswordRef} required />
             </Form.Group>
             <Button disabled={loading} className="w-100" type="submit">
               Signup

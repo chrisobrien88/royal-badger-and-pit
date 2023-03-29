@@ -18,80 +18,28 @@ interface openState {
   [key: string]: boolean;
 }
 
-const MyStats = () => {
-  const { currentUser } = useAuth();
-  const [playerRounds, setPlayerRounds] = useState<any[]>([]);
-  const [bestRoundsScores, setBestRoundsScores] = useState<number[]>([]);
-  const userName = currentUser.displayName;
+const MyStats = ({currentUser, playerRounds, handicapIndex, bestRoundsScores, loading, name} :any) => {
   const [open, setOpen] = useState<openState>({});
-  const [loading, setLoading] = useState<boolean>(false);
-  const [handicapIndex, setHandicapIndex] = useState<number>(0);
-  const [bestScores, setBestScores] = useState<number[]>([]);
+
 
   const handleClick = (id: any) => {
     setOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
   };
 
-  useEffect(() => {
-    setLoading(true);
-    const getplayerRounds = async () => {
-      if (currentUser) {
-        try {
-          Axios.get(
-            `https://cerise-iguana-kit.cyclic.app/api/players/${userName}`
-          ).then((response) => {
-            setPlayerRounds(response.data.roundsPlayed);
-            setBestRoundsScores(
-              response.data.bestRounds.map(
-                (round: any) =>
-                  round.slopeAdjustedEighteenHandicapStablefordScore
-              )
-            );
-          });
-          Axios.get(
-            `https://cerise-iguana-kit.cyclic.app/api/players/${userName}/best-rounds`
-          ).then((response) => {
-            setHandicapIndex(response.data.handicapIndex);
-            setBestScores(response.data.scoresArr);
-            setLoading(false);
-          });
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    };
-    getplayerRounds();
-  }, []);
+  
 
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
-
+    
   return (
     <>
       <Container sx={{ mt: 5 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h5" gutterBottom>
-              My Stats
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Handicap Index: {handicapIndex}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant="body1" gutterBottom>
-              Rounds Played: <Chip label={playerRounds.length} sx={{ ml: 1 }} />
-            </Typography>
-            <Typography variant="body2" gutterBottom>
-              Best Rounds:{" "}
-              {bestRoundsScores.map((score, index) => (
-                <Chip key={index} label={`${score} pts`} sx={{ ml: 1 }} />
-              ))}
-            </Typography>
-          </Grid>
-        </Grid>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          {name}
+        </Typography>
       </Container>
+      
       <List
         sx={{ width: "100%", maxWidth: 360, mt: 2 }}
         component="nav"
@@ -118,7 +66,7 @@ const MyStats = () => {
             />
           </Container>
         ) : (
-          playerRounds.map((playerRound) => (
+          playerRounds.map((playerRound: any) => (
             <Card
               key={playerRound.id}
               className="list-item card"

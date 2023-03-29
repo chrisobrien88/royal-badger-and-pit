@@ -1,7 +1,6 @@
 import Signup from "./Signup";
 import ForgotPassword from "./ForgotPassword";
 import { Container } from "react-bootstrap";
-import { AuthProvider } from "../contexts/AuthContext";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import { ThemeProvider } from "../contexts/ThemeContext";
@@ -12,44 +11,127 @@ import SubmitNewScore from "./SubmitNewScore";
 import MyStats from "./MyStats";
 import Navbar from "./Navbar";
 import CreateProfile from "./CreateProfile";
+import { useAuth } from "../contexts/AuthContext";
+import { useState, useEffect } from "react";
+import Axios from "axios";
 
+interface openState {
+  [key: string]: boolean;
+}
 const windowHeight = window.innerHeight * 0.9;
 
 function App() {
+  const { currentUser } = useAuth();
+
+  const [playerRounds, setPlayerRounds] = useState<any[]>([]);
+  const [name, setName] = useState<string>("");
+  const [bestRoundsScores, setBestRoundsScores] = useState<number[]>([]);
+  const [playerStatsloading, setPlayerStatsLoading] = useState<boolean>(false);
+  const [handicapIndex, setHandicapIndex] = useState<number>(0);
+  const [bestScores, setBestScores] = useState<number[]>([]);
+
+  useEffect(() => {
+    setPlayerStatsLoading(true);
+    const getplayerRounds = async () => {
+      if (currentUser) {
+        const userName = currentUser.displayName;
+        try {
+          Axios.get(
+            `https://cerise-iguana-kit.cyclic.app/api/players/${userName}`
+          ).then((response) => {
+            setName(`${response.data.firstName.toUpperCase()} ${response.data.lastName.toUpperCase()}`);
+            setPlayerRounds(response.data.roundsPlayed);
+            setBestRoundsScores(
+              response.data.bestRounds.map(
+                (round: any) =>
+                  round.slopeAdjustedEighteenHandicapStablefordScore
+              )
+            );
+          });
+          Axios.get(
+            `https://cerise-iguana-kit.cyclic.app/api/players/${userName}/best-rounds`
+          ).then((response) => {
+            setHandicapIndex(response.data.handicapIndex);
+            setBestScores(response.data.scoresArr);
+            setPlayerStatsLoading(false);
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+    getplayerRounds();
+  }, [currentUser]);
+
+  // leaderboard data
+  const [players, setPlayers] = useState<any[]>([]);
+  const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(false);
+  useEffect(() => {
+    setLeaderboardLoading(true);
+    const getPlayers = async () => {
+      try {
+        await Axios.get(
+          "https://cerise-iguana-kit.cyclic.app/api/players"
+        ).then((response) => {
+          setPlayers(response.data);
+          setLeaderboardLoading(false);
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getPlayers();
+  }, [playerRounds]);
+
   return (
     <>
       <Router>
         <ThemeProvider>
-          <AuthProvider>
-            <Container className="d-flex align-items-center justify-content-center">
-              <div
-                className="w-100"
-                style={{
-                  width: 1,
-                  height: windowHeight,
-                  overflow: "scroll",
-                }}
-              >
-                <Routes>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/update-profile" element={<UpdateProfile />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/" element={<Login />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/leaderboard" element={<Leaderboard />} />
-                  <Route
-                    path="/submit-new-score"
-                    element={<SubmitNewScore />}
-                  />
-                  <Route path="/my-stats" element={<MyStats />} />
-                  <Route path="/create-profile" element={<CreateProfile />} />
-                  <Route path="*" element={<h1>404</h1>} />
-                </Routes>
-              </div>
-              <Navbar />
-            </Container>
-          </AuthProvider>
+          <Container className="d-flex align-items-center justify-content-center">
+            <div
+              className="w-100"
+              style={{
+                width: 1,
+                height: windowHeight,
+                overflow: "scroll",
+              }}
+            >
+              <Routes>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/update-profile" element={<UpdateProfile />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route
+                  path="/leaderboard"
+                  element={
+                    <Leaderboard
+                      loading={leaderboardLoading}
+                      players={players}
+                    />
+                  }
+                />
+                <Route path="/submit-new-score" element={<SubmitNewScore />} />
+                <Route
+                  path="/my-stats"
+                  element={
+                    <MyStats
+                      currentUser={currentUser}
+                      name={name}
+                      playerRounds={playerRounds}
+                      handicapIndex={handicapIndex}
+                      bestRoundsScores={bestRoundsScores}
+                      loading={playerStatsloading}
+                    />
+                  }
+                />
+                <Route path="/create-profile" element={<CreateProfile />} />
+                <Route path="*" element={<h1>404</h1>} />
+              </Routes>
+            </div>
+            <Navbar />
+          </Container>
         </ThemeProvider>
       </Router>
     </>
