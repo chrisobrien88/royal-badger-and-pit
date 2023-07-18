@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useTheme, useThemeUpdate } from "../contexts/ThemeContext";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import Axios from "axios";
+import Select from "react-select";
 
 const CreateUserName = () => {
   const userNameRef = useRef<HTMLInputElement>(null);
@@ -13,6 +14,18 @@ const CreateUserName = () => {
   const navigate = useNavigate();
   const { currentUser, updateDisplayName } = useAuth();
   const suggestedUserName = currentUser.email.replace(/@.*/, "");
+
+  const options = [
+    { value: "badger", label: "Badger" },
+    { value: "pit", label: "Pit" },
+  ];
+
+  interface OptionType {
+    value: string;
+    label: string;
+  }
+
+  const [selected, setSelected] = useState<OptionType | null>(null);
 
   const [error, setError] = useState<String>("");
   const [message, setMessage] = useState<String>("");
@@ -31,15 +44,16 @@ const CreateUserName = () => {
         console.log(userNameRef.current?.value);
 
         await updateDisplayName(userNameRef.current?.value);
-        await Axios.post("https://cerise-iguana-kit.cyclic.app/api/newplayer", {
+        await Axios.post("http://localhost:5000/api/newplayer", {
           firstName: firstNameRef.current?.value,
           lastName: lastNameRef.current?.value,
           userName: userNameRef.current?.value,
-          email: currentUser.email,
+          leagueName: selected?.value,
+          // email: currentUser.email,
         });
         setMessage("Username updated");
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/leaderboard");
         }, 500);
       } catch {
         setError("Failed to update username");
@@ -49,8 +63,16 @@ const CreateUserName = () => {
   };
 
   if (!currentUser) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/leaderboard" />;
   }
+
+  
+  const handleChange = (
+    selectedOption: { value: string; label: string } | null
+  ) => {
+    setSelected(selectedOption);
+    console.log(`Option selected:`, selectedOption);
+  };
 
   return (
     <>
@@ -60,7 +82,7 @@ const CreateUserName = () => {
           {message && <Alert variant="success">{message}</Alert>}
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" id="email">
+            <Form.Group className="mb-3" id="username">
               <Form.Label>Username</Form.Label>
               <Form.Control
                 type="userName"
@@ -69,7 +91,7 @@ const CreateUserName = () => {
                 defaultValue={suggestedUserName}
               />
             </Form.Group>
-            <Form.Group className="mb-3" id="email">
+            <Form.Group className="mb-3" id="firstName">
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="userName"
@@ -78,7 +100,7 @@ const CreateUserName = () => {
                 placeholder="first name"
               />
             </Form.Group>
-            <Form.Group className="mb-3" id="email">
+            <Form.Group className="mb-3" id="lastName">
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 type="userName"
@@ -86,6 +108,19 @@ const CreateUserName = () => {
                 required
                 placeholder="last name"
               />
+            </Form.Group>
+
+            <Form.Group className="mb-3" id="leagueName">
+              <Form.Label>League</Form.Label>
+
+              <Select
+                onChange={handleChange}
+                options={options}
+                autoFocus={true}
+              />
+              <div className="mt-4">
+                {selected && <>You've selected {selected.value}</>}
+              </div>
             </Form.Group>
 
             <Button disabled={loading} className="w-100" type="submit">

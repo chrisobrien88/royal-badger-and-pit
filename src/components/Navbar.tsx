@@ -47,16 +47,18 @@ export default function LabelBottomNavigation() {
         onClick={() => handleClick("/my-stats")}
         label="My stats"
         value="my-stats"
-        disabled={currentUser ? false : true}
-        style={{ color: currentUser ? "white" : "grey" }}
+        // disabled={currentUser ? false : true}
+        // style={{ color: currentUser ? "white" : "grey" }}
+        style={{ color: "white" }}
         icon={<TimelineRoundedIcon />}
       />
       <BottomNavigationAction
         onClick={() => handleClick("/submit-new-score")}
         label="New Score"
         value="submit-new-score"
-        disabled={currentUser ? false : true}
-        style={{ color: currentUser ? "white" : "grey" }}
+        // disabled={currentUser ? false : true}
+        // style={{ color: currentUser ? "white" : "grey" }}
+        style={{ color: "white" }}
         icon={<AddBoxRoundedIcon />}
       />
       <BottomNavigationAction
