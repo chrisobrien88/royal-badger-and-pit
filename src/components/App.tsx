@@ -7,6 +7,7 @@ import { ThemeProvider } from "../contexts/ThemeContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UpdateProfile from "./UpdateProfile";
 import Leaderboard from "./Leaderboard";
+import TopTrumpsIndex from "./topTrumps/TopTrumpsIndex";
 import SubmitNewScore from "./SubmitNewScoreNoLogin";
 import MyStats from "./MyStats";
 import Navbar from "./Navbar";
@@ -79,6 +80,7 @@ function App() {
                     />
                   }
                 />
+                <Route path="/top-trumps" element={<TopTrumpsIndex />} />
                 <Route path="/submit-new-score" element={<SubmitNewScore />} />
                 {/* <Route
                   path="/my-stats"

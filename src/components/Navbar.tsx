@@ -5,6 +5,7 @@ import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import TimelineRoundedIcon from "@mui/icons-material/TimelineRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { useNavigate } from "react-router-dom";
 
 import { useLocation } from "react-router-dom";
@@ -43,7 +44,7 @@ export default function LabelBottomNavigation() {
       value={value}
       onChange={handleChange}
     >
-      <BottomNavigationAction
+      {/* <BottomNavigationAction
         onClick={() => handleClick("/my-stats")}
         label="My stats"
         value="my-stats"
@@ -51,6 +52,13 @@ export default function LabelBottomNavigation() {
         // style={{ color: currentUser ? "white" : "grey" }}
         style={{ color: "white" }}
         icon={<TimelineRoundedIcon />}
+      /> */}
+      <BottomNavigationAction
+        onClick={() => handleClick("/top-trumps")}
+        label="Top Trumps"
+        value="top-trumps"
+        style={{ color: "white" }}
+        icon={<SportsEsportsIcon />}
       />
       <BottomNavigationAction
         onClick={() => handleClick("/submit-new-score")}
@@ -68,7 +76,7 @@ export default function LabelBottomNavigation() {
         style={{ color: "white" }}
         icon={<LeaderboardIcon />}
       />
-      <BottomNavigationAction
+      {/* <BottomNavigationAction
         onClick={() => {
           currentUser ? handleClick("/dashboard") : handleClick("/login");
         }}
@@ -76,7 +84,7 @@ export default function LabelBottomNavigation() {
         value="dashboard"
         style={{ color: "white" }}
         icon={<PersonRoundedIcon />}
-      />
+      /> */}
     </BottomNavigation>
   );
 }

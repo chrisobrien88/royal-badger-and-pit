@@ -1,0 +1,20 @@
+{
+    "1": {
+        "name": "Chris O'Brien",
+        "nickname": "Badger",
+        "Stats": {
+            "Brashness": 3,
+            "ChanceOfAnEarlyNight": 87,
+            "DrinkingAbility": 2,
+            "DrinkOfChoice": "Schnapps",
+            "DrinkAlcohol": 15,
+            "TeamPlayer": 88,
+            "Nemesis": "Mackay",
+            "ChesseMeltability": 1,
+            "handicap": 11.3,
+            "drivingDistance": 199,
+            "fairwaysFound": 4,
+            "PuttsPerRound": 36
+        }
+    }
+}
