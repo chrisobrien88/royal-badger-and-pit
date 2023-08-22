@@ -16,7 +16,7 @@ const TopTrumpsIndex = () => {
   return (
     <>
       <Card>
-        Info about players
+        Player Info
       </Card>
     </>
 
