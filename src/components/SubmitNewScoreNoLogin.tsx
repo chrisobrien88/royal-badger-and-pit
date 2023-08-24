@@ -31,6 +31,12 @@ const SubmitNewScore = () => {
   }
 
   const [userName, setUserName] = useState<OptionType | null>(null);
+  const [leagueStartDate, setLeagueStartDate] = useState<Date>(new Date(
+    "2024-03-01"
+  ));
+  const [leagueEndDate, setLeagueEndDate] = useState<Date>(new Date(
+    "2024-08-31"
+  ));
 
   const [handicapIndex, setHandicapIndex] = useState<number>(0);
   const [courseHandicap, setCourseHandicap] = useState<number>(0);
@@ -137,6 +143,8 @@ const SubmitNewScore = () => {
         userName: userName,
         courseHandicap: 0,
         handicapIndex: handicapIndex,
+        leagueStartDate: leagueStartDate,
+        leagueEndDate: leagueEndDate,
 
         eagles: eaglesState,
         birdies: birdiesState,
