@@ -67,7 +67,7 @@ const LeaderboardCard = ({ player, handleClick, open, index }: Props) => {
             Handicap
           </ListSubheader>
           <ListItem sx={{ pl: 4 }}>
-            <ListItemText primary={player.handicapIndex} />
+            <ListItemText primary={player.handicapIndex.toFixed(1)} />
           </ListItem>
           <ListSubheader component="div" id="nested-list-subheader">
             Top Scores

@@ -126,7 +126,7 @@ const SubmitNewScore = () => {
         parState +
         courseRatingState
     );
-  }, [slopeRatingState, courseRatingState, eighteenHandicapStablefordScore]);
+  }, [slopeRatingState, courseRatingState, eighteenHandicapStablefordScore, parState]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -334,15 +334,28 @@ const SubmitNewScore = () => {
               style={{
                 borderRadius: "5px",
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: "space-around",
                 alignItems: "center",
               }}
             >
-              <Typography variant="body2" color="text.secondary" align="center">
-                RBPS Score:
+              <Typography variant="body2" color="text.secondary" align="center"
+              >
+                Points:
               </Typography>
               <Chip
-                label={`${slopeAdjustedEighteenHandicapStablefordScore} pts`}
+                label={`${eighteenHandicapStablefordScore} pts`}
+                sx={{
+                  backgroundColor:
+                    holesPlayed === 18 ? "success.main" : "grey.500",
+                  color: "white",
+                  ml: 1,
+                }}
+              />
+              <Typography variant="body2" color="text.secondary" align="center" >
+                Slope Adjusted points:
+              </Typography>
+              <Chip
+                label={`${slopeAdjustedEighteenHandicapStablefordScore.toFixed(1)} pts`}
                 sx={{
                   backgroundColor:
                     holesPlayed === 18 ? "success.main" : "grey.500",
