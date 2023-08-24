@@ -38,7 +38,7 @@ const SubmitNewScore = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-//   const userName = useRef<HTMLInputElement>(null);
+  //   const userName = useRef<HTMLInputElement>(null);
   const courseRef = useRef<HTMLInputElement>(null);
   const [starValue, setStarValue] = React.useState<number | null>(3);
 
@@ -116,14 +116,14 @@ const SubmitNewScore = () => {
 
   useEffect(() => {
     setSlopeAdjustedEighteenHandicapStablefordScore(
-      eighteenHandicapStablefordScore * (slopeRatingState / 125) -
-        72 +
+      eighteenHandicapStablefordScore * (slopeRatingState / 120) -
+        parState +
         courseRatingState
     );
 
     setSlopeAdjustedThirtySixHandicapStablefordScore(
-      thirtySixHandicapStablefordScore * (slopeRatingState / 125) -
-        72 +
+      thirtySixHandicapStablefordScore * (slopeRatingState / 120) -
+        parState +
         courseRatingState
     );
   }, [slopeRatingState, courseRatingState, eighteenHandicapStablefordScore]);
@@ -133,38 +133,35 @@ const SubmitNewScore = () => {
     setLoading(true);
 
     try {
-      await Axios.post(
-        `http://localhost:5000/api/players/submit-new-round`,
-        {
-          userName: userName,
-          courseHandicap: 0,
-          handicapIndex: handicapIndex,
+      await Axios.post(`http://localhost:5000/api/players/submit-new-round`, {
+        userName: userName,
+        courseHandicap: 0,
+        handicapIndex: handicapIndex,
 
-          eagles: eaglesState,
-          birdies: birdiesState,
-          pars: parsState,
-          bogeys: bogeysState,
-          doubleBogeys: doubleBogeysState,
-          tripleBogeys: tripleBogeysState,
-          blobs: blobsState,
+        eagles: eaglesState,
+        birdies: birdiesState,
+        pars: parsState,
+        bogeys: bogeysState,
+        doubleBogeys: doubleBogeysState,
+        tripleBogeys: tripleBogeysState,
+        blobs: blobsState,
 
-          slopeRating: slopeRatingState,
-          courseRating: courseRatingState,
-          par: parState,
-          course: courseRef.current?.value,
-          //   courseStarRating: starValue,
-          datePlayed: Date.now(),
+        slopeRating: slopeRatingState,
+        courseRating: courseRatingState,
+        par: parState,
+        course: courseRef.current?.value,
+        //   courseStarRating: starValue,
+        datePlayed: Date.now(),
 
-          grossStablefordScore: 0,
-          eighteenHandicapStablefordScore: eighteenHandicapStablefordScore,
-          thirtySixHandicapStablefordScore: thirtySixHandicapStablefordScore,
-          slopeAdjustedStablefordScore: 0,
-          slopeAdjustedEighteenHandicapStablefordScore:
-            slopeAdjustedEighteenHandicapStablefordScore,
-          slopeAdjustedThirtySixHandicapStablefordScore:
-            slopeAdjustedThirtySixHandicapStablefordScore,
-        }
-      ).then((response) => {
+        grossStablefordScore: 0,
+        eighteenHandicapStablefordScore: eighteenHandicapStablefordScore,
+        thirtySixHandicapStablefordScore: thirtySixHandicapStablefordScore,
+        slopeAdjustedStablefordScore: 0,
+        slopeAdjustedEighteenHandicapStablefordScore:
+          slopeAdjustedEighteenHandicapStablefordScore,
+        slopeAdjustedThirtySixHandicapStablefordScore:
+          slopeAdjustedThirtySixHandicapStablefordScore,
+      }).then((response) => {
         navigate(`/leaderboard`);
       });
     } catch (err) {
@@ -173,10 +170,10 @@ const SubmitNewScore = () => {
     setLoading(false);
   };
 
-//   useEffect(() => {
-//     const courseHandicap = Math.round(handicapIndex * (slopeRatingState / 113));
-//     setCourseHandicap(courseHandicap);
-//   }, [handicapIndex, slopeRatingState]);
+  //   useEffect(() => {
+  //     const courseHandicap = Math.round(handicapIndex * (slopeRatingState / 113));
+  //     setCourseHandicap(courseHandicap);
+  //   }, [handicapIndex, slopeRatingState]);
 
   const handleChange = (
     selectedOption: { value: string; label: string } | null
@@ -215,7 +212,6 @@ const SubmitNewScore = () => {
                   options={options}
                   autoFocus={true}
                 />
-               
               </Grid>
               <Grid item xs={20} sm={12}>
                 <TextField
@@ -346,7 +342,7 @@ const SubmitNewScore = () => {
                 RBPS Score:
               </Typography>
               <Chip
-                label={`${eighteenHandicapStablefordScore} pts`}
+                label={`${slopeAdjustedEighteenHandicapStablefordScore} pts`}
                 sx={{
                   backgroundColor:
                     holesPlayed === 18 ? "success.main" : "grey.500",
