@@ -82,20 +82,7 @@ function App() {
                 />
                 <Route path="/top-trumps" element={<TopTrumpsIndex />} />
                 <Route path="/submit-new-score" element={<SubmitNewScore />} />
-                {/* <Route
-                  path="/my-stats"
-                  element={
-                    <MyStats
-                      currentUser={currentUser}
-                      name={name}
-                      playerRounds={playerRounds}
-                      handicapIndex={handicapIndex}
-                      bestRoundsScores={bestRoundsScores}
-                      loading={playerStatsloading}
-                    />
-                  }
-                />
-              */}
+          
                 <Route path="/create-profile" element={<CreateProfile />} /> 
                 <Route path="*" element={<h1>404</h1>} />
               </Routes>

@@ -31,6 +31,7 @@ const SubmitNewScore = () => {
   }
 
   const [userName, setUserName] = useState<OptionType | null>(null);
+  // this should be set by an admin in the future
   const [leagueStartDate, setLeagueStartDate] = useState<Date>(new Date(
     "2024-03-01"
   ));
