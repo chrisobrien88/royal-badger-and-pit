@@ -1,21 +1,15 @@
 import Signup from "./Signup";
-import ForgotPassword from "./ForgotPassword";
 import { Container } from "react-bootstrap";
-import Dashboard from "./Dashboard";
-import Login from "./Login";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import UpdateProfile from "./UpdateProfile";
 import Leaderboard from "./Leaderboard";
 import TopTrumpsIndex from "./topTrumps/TopTrumpsIndex";
 import SubmitNewScore from "./SubmitNewScoreNoLogin";
-import MyStats from "./MyStats";
 import Navbar from "./Navbar";
 import CreateProfile from "./CreateProfile";
 import { useAuth } from "../contexts/AuthContext";
 import { useState, useEffect } from "react";
 import Axios from "axios";
-import { getPlayers } from "../utils/fetchingData";
 
 interface openState {
   [key: string]: boolean;
@@ -24,13 +18,6 @@ const windowHeight = window.innerHeight * 0.9;
 
 function App() {
   const { currentUser } = useAuth();
-
-  const [playerRounds, setPlayerRounds] = useState<any[]>([]);
-  const [name, setName] = useState<string>("");
-  const [bestRoundsScores, setBestRoundsScores] = useState<number[]>([]);
-  const [playerStatsloading, setPlayerStatsLoading] = useState<boolean>(false);
-  const [handicapIndex, setHandicapIndex] = useState<number>(0);
-  const [bestScores, setBestScores] = useState<number[]>([]);
 
   const [players, setPlayers] = useState<any[]>([]);
   const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(false);
@@ -49,7 +36,7 @@ function App() {
       }
     };
     getPlayers();
-  }, [playerRounds]);
+  }, []);
 
   return (
     <>
@@ -65,12 +52,7 @@ function App() {
               }}
             >
               <Routes>
-                {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-                {/* <Route path="/update-profile" element={<UpdateProfile />} /> */}
                 <Route path="/signup" element={<Signup />} />
-                {/* <Route path="/" element={<Login />} /> */}
-                {/* <Route path="/login" element={<Login />} /> */}
-                {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
                 <Route
                   path="/leaderboard"
                   element={
