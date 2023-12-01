@@ -41,7 +41,6 @@ const CreateUserName = () => {
         setMessage("");
         setError("");
         setLoading(true);
-        console.log(userNameRef.current?.value);
 
         await updateDisplayName(userNameRef.current?.value);
         await Axios.post("http://localhost:5000/api/newplayer", {

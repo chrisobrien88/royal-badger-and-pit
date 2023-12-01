@@ -22,8 +22,6 @@ const Dashboard = () => {
     return <Navigate to="/login" />;
   }
 
-  console.log(currentUser);
-
   return (
     <>
       <Card

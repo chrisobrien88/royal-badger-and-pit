@@ -7,17 +7,12 @@ import TopTrumpsIndex from "./topTrumps/TopTrumpsIndex";
 import SubmitNewScore from "./SubmitNewScoreNoLogin";
 import Navbar from "./Navbar";
 import CreateProfile from "./CreateProfile";
-import { useAuth } from "../contexts/AuthContext";
 import { useState, useEffect } from "react";
 import Axios from "axios";
 
-interface openState {
-  [key: string]: boolean;
-}
 const windowHeight = window.innerHeight * 0.9;
 
 function App() {
-  const { currentUser } = useAuth();
 
   const [players, setPlayers] = useState<any[]>([]);
   const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(false);
