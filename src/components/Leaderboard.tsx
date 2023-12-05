@@ -20,7 +20,6 @@ interface IopenState {
 }
 
 const Leaderboard = ({ loading, players }: any) => {
-  const [error, setError] = React.useState<string>("");
 
   const [open, setOpen] = useState<IopenState>({});
 
