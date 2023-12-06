@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import Axios from "axios";
-import { List, ListItem, Grid, Typography, Container } from "@mui/material";
+import { List, ListItem, Typography, Container } from "@mui/material";
 import ListSubheader from "@mui/material/ListSubheader";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
